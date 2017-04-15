@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
+  "name": "Wiki Book",
+  "description": "A Node.js project to provide internet to users with only free facebook internet",
+  "repository": "https://github.com/Modus28/wiki-book"
   "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "heroku"],
+  "keywords": ["node", "wiki-book", "heroku", "facebook", "free", "internet"],
   "image": "heroku/nodejs"
 }
