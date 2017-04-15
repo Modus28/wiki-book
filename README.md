@@ -7,11 +7,11 @@ https://github.com/WhiteHouse/fb_messenger_bot
 
 
 # People making this:
-Sacheth Chandramouli
-Thomas Lerner
-Michael Smith
-Stan Tian
-Daniel Grigsby
-Adam Beck
-Vincent Portelli
-Martin Bbela
+Sacheth Chandramouli /n
+Thomas Lerner /n
+Michael Smith /n
+Stan Tian /n
+Daniel Grigsby /n
+Adam Beck /n
+Vincent Portelli /n
+Martin Bbela /n
