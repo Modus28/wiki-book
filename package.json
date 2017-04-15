@@ -1,6 +1,6 @@
 {
   "name": "Wiki-book",
-  "version": "0.1,
+  "version": "0.1",
   "description": "A Node.js project to provide internet to users with only free facebook internet",
   "engines": {
     "node": "6.10.2"

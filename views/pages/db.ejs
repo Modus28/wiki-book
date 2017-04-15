@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
- 
+	 <% include ../partials/header.ejs %>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wiki Book</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	
 </head>
 
 <body>
 
-<div class="container">
-<h2>Database Results</h2>
-
-<ul>
+<div class="jumbotron text-center">
+<h1>Wiki-Books</h1> 
+  <p>Database Results <p>
+  
+<hr>  
+<center>
+<table>
+<tr>
+            <th>Keyword</th>
+            <th>Link</th>
+</tr>
     <% results.forEach(function(r) { %>
-        <li><%= r.keyword %> - <%= r.link %></li>
+        <tr> <td><%= r.keyword     %></td> <td> <%= r.link %></td> </tr>
     <% }); %>
-</ul>
 
+</table>
+</center>
 </div>
 
 </body>
