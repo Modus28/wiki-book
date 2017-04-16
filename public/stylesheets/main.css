@@ -1,5 +1,5 @@
 .jumbotron {
-  background: #532F8C;
+  background: #7f53c6;
   color: white;
   padding-bottom: 80px; }
   .jumbotron .btn-primary {
@@ -9,7 +9,7 @@
       background: #7646c1; }
   .jumbotron p {
     color: #d9ccee;
-    max-width: 75%;
+    max-width: 80%;
     margin: 1em auto 2em; }
   .navbar + .jumbotron {
     margin-top: -20px; }
@@ -29,3 +29,18 @@
     border: 1px solid black;
 	padding: 5px;
 }
+.footerWrap {
+    width:100%;
+    position:fixed;
+    bottom: 0px;
+}
+.footer {
+    margin:auto;
+}
+.footerContent {
+    float:center;
+    width:100%;
+    padding:20px 0;
+}
+.footer p {float:left; width:100%; text-align:center; }
+.body { background-color:#b89fdf;}
