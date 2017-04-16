@@ -67,6 +67,9 @@ def htmlToText(url):
         if counter % 250 == 0:
             returnString += "-\n"
     return returnString
+	
+def add_wiki_to_db(word):
+    doInsert(word,htmlToText("https://en.wikipedia.org/wiki/" + word).replace("'","''"))
 
 #fileHandle.write(line)
 

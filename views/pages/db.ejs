@@ -17,20 +17,23 @@
 <div class="jumbotron text-center">
 <h1>Wiki-Books</h1> 
   <p>Database Results <p>
+
   
 <hr>  
 <center>
-<table>
+<table style="table-layout: fixed; width: 100%">
 <tr>
             <th>Keyword</th>
             <th>Text</th>
 </tr>
     <% results.forEach(function(r) { %>
-        <tr> <td><%= r.keyword     %></td> <td> <%= r.text %></td> </tr>
+        <tr> <td><%=r.keyword     %></td> <td style="word-wrap: break-word"> <%= r.text.substring(0,190) %></td> </tr>
     <% }); %>
 
 </table>
+  Text display capped at 200 characters. 
 </center>
+
 </div>
 
 </body>

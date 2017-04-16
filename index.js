@@ -9,9 +9,13 @@ app.use(express.static(__dirname + '/public'));
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+app.locals.pretty = true;
+
 
 app.get('/', function(request, response) {
-  response.render('pages/index')
+  response.render('pages/index.html')
 });
 
 app.get('/cool', function(request, response) {
