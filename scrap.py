@@ -9,6 +9,8 @@ params = {
   'host': 'ec2-174-129-227-116.compute-1.amazonaws.com',
   'port': 5432
 }
+conn = psycopg2.connect(**params)
+cur = conn.cursor()
 class hackCWRUProject(fbchat.Client):
 
     def __init__(self,email, password, debug=True, user_agent=None):
@@ -38,12 +40,11 @@ def validateOutput(keywords):
 
 
 def searchDatabase(keyword):
-    conn = psycopg2.connect(**params)
-    cur = conn.cursor()
-    cur.execute( "SELECT * FROM wiki_links WHERE keyword like '%" + keyword + "%';"  )
+    key = str(keyword).upper();
+    cur.execute( "SELECT * FROM wiki_links WHERE UPPER(keyword) like '%" + key + "%';"  )
     valueOf = cur.fetchone()
     if valueOf == None:
-        return ['none',"We could not find any entries on this input. Try something else."]
+        return lookupWikipedia(keyword)
     return valueOf;
 
 def splitTextIntoFormattedChuncks(fullText):
@@ -52,7 +53,20 @@ def splitTextIntoFormattedChuncks(fullText):
         lists.append(fullText[i:i+500])
     return lists
 
+def lookupWikipedia(keyword):
+    text = wikipedia.summary(keyword, sentences = 100)
+    doInsert(str(keyword),text)
+    key = str(keyword).upper();
+    cur.execute( "SELECT * FROM wiki_links WHERE UPPER(keyword) like '%" + key + "%';"  )
+    valueOf = cur.fetchone()
+    return valueOf;
 
+def doInsert(keyword,text) :
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    text = text.replace("'","''")
+    cur.execute("INSERT INTO wiki_links VALUES ('" + str(keyword) + "','" + text + "');")
+    conn.commit()
 
 bot = hackCWRUProject("wikibook2017@gmail.com", "HACKCWRU!")
 bot.listen()
