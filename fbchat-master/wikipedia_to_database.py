@@ -1,6 +1,7 @@
 import urllib, urllib.request
 from bs4 import BeautifulSoup
 import psycopg2
+import requests
 
 params = {
   'dbname': 'd12u190iuusr3o',
@@ -30,6 +31,9 @@ def doQuery(keyword) :
 # Written by Adam Beck. Takes in a URL, and returns an acceptably formatted
 # string that contains all of the text from that webpage.
 def htmlToText(url):
+    request = requests.get(url)
+    if request.status_code != 200:
+        return 'does not exist'
     fhand = urllib.request.urlopen(url)
     soup = BeautifulSoup(fhand)
     a = soup.find("div", {"id": "mw-content-text"}).text
@@ -69,7 +73,11 @@ def htmlToText(url):
     return returnString
 	
 def add_wiki_to_db(word):
-    doInsert(word,htmlToText("https://en.wikipedia.org/wiki/" + word).replace("'","''"))
+    wiki_body = htmlToText("https://en.wikipedia.org/wiki/" + word).replace("'","''")
+    if (wiki_body != 'does not exist'):
+	    doInsert(word,wiki_body)
+	    return True
+    return False
 
 #fileHandle.write(line)
 
