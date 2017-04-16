@@ -1,0 +1,9 @@
+# Force recognition of different languages in github
+*.py linguist-language=Python
+*.ejs linguist-language=HTML
+*.css linguist-language=CSS
+*.js linguist-language=JavaScript
+
+# Specify generated code/documentation folders
+fbchat-master/fbchat/* linguist-vendored=true
+fbchat-master/.idea/* linguist-vendored=true
