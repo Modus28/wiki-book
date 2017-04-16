@@ -9,8 +9,6 @@ params = {
   'host': 'ec2-174-129-227-116.compute-1.amazonaws.com',
   'port': 5432
 }
-conn = psycopg2.connect(**params)
-cur = conn.cursor()
 class hackCWRUProject(fbchat.Client):
 
     def __init__(self,email, password, debug=True, user_agent=None):
@@ -40,9 +38,13 @@ def validateOutput(keywords):
 
 
 def searchDatabase(keyword):
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
     key = str(keyword).upper();
     cur.execute( "SELECT * FROM wiki_links WHERE UPPER(keyword) like '%" + key + "%';"  )
+    # 'SELECT * FROM wiki_links WHERE ATOM like ATOM';'DROP TABLE wiki_links"
     valueOf = cur.fetchone()
+    conn.close();
     if valueOf == None:
         return lookupWikipedia(keyword)
     return valueOf;
@@ -54,11 +56,17 @@ def splitTextIntoFormattedChuncks(fullText):
     return lists
 
 def lookupWikipedia(keyword):
-    text = wikipedia.summary(keyword, sentences = 100)
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    try:
+        text = wikipedia.summary(keyword, sentences = 100)
+    except wikipedia.exceptions.DisambiguationError:
+        return ['Error', "This query is too general. Please refine it more."]
     doInsert(str(keyword),text)
     key = str(keyword).upper();
     cur.execute( "SELECT * FROM wiki_links WHERE UPPER(keyword) like '%" + key + "%';"  )
-    valueOf = cur.fetchone()
+    valueOf = cur.fetchone();
+    conn.close();
     return valueOf;
 
 def doInsert(keyword,text) :
@@ -67,6 +75,7 @@ def doInsert(keyword,text) :
     text = text.replace("'","''")
     cur.execute("INSERT INTO wiki_links VALUES ('" + str(keyword) + "','" + text + "');")
     conn.commit()
+    conn.close();
 
 bot = hackCWRUProject("wikibook2017@gmail.com", "HACKCWRU!")
 bot.listen()
