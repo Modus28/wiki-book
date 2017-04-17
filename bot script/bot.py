@@ -1,12 +1,13 @@
 import fbchat
 import re
 import psycopg2
+import wikipedia
 params = {
-  'dbname': 'd12u190iuusr3o',
-  'user': 'quszuctlcqieqr',
-  'password': '07351f585b5c9721034f3b7fa97c7d970a40a018d945a3b52e6a288fd7946cd8',
-  'host': 'ec2-174-129-227-116.compute-1.amazonaws.com',
-  'port': 5432
+  'dbname': 'redacted',
+  'user': 'redacted',
+  'password': 'redacted',
+  'host': 'redacted',
+  'port': redacted
 }
 class hackCWRUProject(fbchat.Client):
 
@@ -21,27 +22,31 @@ class hackCWRUProject(fbchat.Client):
         if str(author_id) != str(self.uid):
             #responseText = validateOutput(keywords);
             #wikiText = searchDatabase(keywords);
-            chunks_of_texts = splitTextIntoFormattedChuncks(validateOutput(keywords));
-            for each in chunks_of_texts:
-                self.send(author_id, each);
+            fullText = validateOutput(keywords);
+            a = str(fullText[1]);
+            for i in range(0, len(a), 500):
+                self.send(author_id, a[i:i+500]);
 
 def validateOutput(keywords):
     if keywords[1:5] == "help":
-        return "commands are /help, /search [article]..."
+        return ['help',"commands are /help, /search [article]..."]
     elif keywords[1:7] == "search":
         keyword = keywords[8:]
         return searchDatabase(keyword)
     else:
-        return "Please type in a valid command"
+        return ['valid',"Please type in a valid command"]
 
 
 def searchDatabase(keyword):
     conn = psycopg2.connect(**params)
     cur = conn.cursor()
-    cur.execute( "SELECT * FROM wiki_links WHERE keyword like '%" + keyword + "%';"  )
+    key = str(keyword).upper();
+    cur.execute( "SELECT * FROM wiki_links WHERE UPPER(keyword) like '%" + key + "%';"  )
+    # 'SELECT * FROM wiki_links WHERE ATOM like ATOM';'DROP TABLE wiki_links"
     valueOf = cur.fetchone()
+    conn.close();
     if valueOf == None:
-        return "We could not find any entries on this input. Try something else."
+        return lookupWikipedia(keyword)
     return valueOf;
 
 def splitTextIntoFormattedChuncks(fullText):
@@ -50,6 +55,27 @@ def splitTextIntoFormattedChuncks(fullText):
         lists.append(fullText[i:i+500])
     return lists
 
+def lookupWikipedia(keyword):
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    try:
+        text = wikipedia.summary(keyword, sentences = 100)
+    except wikipedia.exceptions.DisambiguationError:
+        return ['Error', "This query is too general. Please refine it more."]
+    doInsert(str(keyword),text)
+    key = str(keyword).upper();
+    cur.execute( "SELECT * FROM wiki_links WHERE UPPER(keyword) like '%" + key + "%';"  )
+    valueOf = cur.fetchone();
+    conn.close();
+    return valueOf;
+
+def doInsert(keyword,text) :
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()
+    text = text.replace("'","''")
+    cur.execute("INSERT INTO wiki_links VALUES ('" + str(keyword) + "','" + text + "');")
+    conn.commit()
+    conn.close();
 
 bot = hackCWRUProject("wikibook2017@gmail.com", "HACKCWRU!")
 bot.listen()
