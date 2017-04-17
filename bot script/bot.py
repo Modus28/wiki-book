@@ -1,12 +1,13 @@
 import fbchat
 import re
 import psycopg2
+
 params = {
-  'dbname': 'd12u190iuusr3o',
-  'user': 'quszuctlcqieqr',
-  'password': '07351f585b5c9721034f3b7fa97c7d970a40a018d945a3b52e6a288fd7946cd8',
-  'host': 'ec2-174-129-227-116.compute-1.amazonaws.com',
-  'port': 5432
+  'dbname': 'redacted',
+  'user': 'redacted',
+  'password': 'redacted',
+  'host': 'redacted',
+  'port': redacted
 }
 class hackCWRUProject(fbchat.Client):
 
